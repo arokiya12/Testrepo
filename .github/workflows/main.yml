@@ -1,0 +1,11 @@
+# .github/workflows/build.yml
+name: Build Test Repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Running build in test repo triggered by dev repo"
