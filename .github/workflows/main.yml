@@ -19,7 +19,9 @@ jobs:
           echo "Test case 1: PASS" > test-results.txt
           echo "Test case 2: FAIL" >> test-results.txt
           echo "Test case 3: PASS" >> test-results.txt
-          echo $? > test-exit-code.txt
+
+          # Simulate exit code: 0 for success, 1 for failure
+          echo 1 > test-exit-code.txt  # Change to 0 if all tests pass
 
       - name: Send email with test results
         if: always()
