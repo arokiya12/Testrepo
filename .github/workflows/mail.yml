@@ -1,0 +1,33 @@
+name: Build Test Repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Run build and simulate tests
+        run: |
+          echo "Running build in test repo triggered by dev repo"
+          echo "Executing test cases..."
+          # Simulated test output — replace with your actual test command
+          echo "Test case 1: PASS" > test-results.txt
+          echo "Test case 2: FAIL" >> test-results.txt
+          echo "Test case 3: PASS" >> test-results.txt
+
+      - name: Send email with test results
+        if: always()
+        run: |
+          STATUS=${{ job.status }}
+          RESULTS=$(cat test-results.txt)
+          curl -s --user "api:${{ secrets.MAILGUN_API_KEY }}" \
+          https://api.mailgun.net/v3/${{ secrets.MAILGUN_DOMAIN }}/messages \
+          -F from="${{ secrets.EMAIL_FROM }}" \
+          -F to="${{ secrets.EMAIL_TO }}" \
+          -F subject="🧪 Test Repo Build: $STATUS" \
+          -F text="Build Status: $STATUS\n\nTest Results:\n$RESULTS"
